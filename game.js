@@ -130,7 +130,72 @@ function draw() {
     x += dx;
     y += dy;
 
+    if (y + dy > canvas.height - ballRadius + 10) { // ボールがキャンバスの下部まで落ちた場合
+        gameOver(); // ゲームオーバー処理を実行
+        return; // ゲームオーバーしたため、以降の描画処理をスキップ
+    }
+
     requestAnimationFrame(draw);
 }
 
+function gameOver() {
+    alert("ゲームオーバー");
+    document.location.reload();
+}
+
 draw();
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            const brick = bricks[c][r];
+            if (brick.status == 1) {
+                if (x > brick.x && x < brick.x + brickWidth && y > brick.y && y < brick.y + brickHeight) {
+                    dy = -dy;
+                    brick.status = 0;
+                    handleGameEnd(); // ブロックが崩れた後にゲーム終了をチェックする
+                }
+            }
+        }
+    }
+}
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            const brick = bricks[c][r];
+            if (brick.status == 1) {
+                if (x > brick.x && x < brick.x + brickWidth && y > brick.y && y < brick.y + brickHeight) {
+                    dy = -dy;
+                    brick.status = 0;
+                    handleGameEnd(); // ブロックが崩れた後にゲーム終了をチェックする
+                }
+            }
+        }
+    }
+}
+
+// ブロックが全て崩れた後の処理を行う関数
+function handleGameEnd() {
+    if (checkGameOver()) {
+        alert("おめでとうございます！すべてのブロックを崩しました！");
+        // ここでゲームを再起動するか、次のステージに進むための処理を実装する
+        // 例えば、以下のようにしてページをリロードしてゲームを再起動する
+        document.location.reload();
+    }
+}
+
+// ブロックが残っているかどうかをチェックする関数
+function checkGameOver() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status == 1) {
+                return false; // 崩れていないブロックがある場合は false を返す
+            }
+        }
+    }
+    return true; // 崩れているブロックがない場合は true を返す
+}
+// ゲーム終了時に音楽を停止する関数
+function stopGameMusic() {
+    const gameMusic = document.getElementById("gameMusic");
+    gameMusic.pause();
+}
