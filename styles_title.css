@@ -1,0 +1,36 @@
+canvas {
+    background-color: #eee;
+    display: block;
+    margin: 0 auto;
+}
+
+.start-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.start-screen h2 {
+    border: 2px solid black;
+    /* 黒色の境界線を追加 */
+    padding: 10px;
+    background-color: white;
+    font-size: 24px;
+}
+
+.start-screen button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+body {
+    background-image: url('../image/haikei_title.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}

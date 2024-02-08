@@ -1,0 +1,22 @@
+canvas {
+    background-color: #eee;
+    display: block;
+    margin: 0 auto;
+}
+
+.start-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.start-screen h2 {
+    font-size: 24px;
+}
+
+.start-screen button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
