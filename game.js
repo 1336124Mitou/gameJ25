@@ -4,15 +4,15 @@ const ctx = canvas.getContext("2d");
 const ballRadius = 10;
 let x = canvas.width / 2;
 let y = canvas.height - 30;
-let dx = 2;
-let dy = -2;
+let dx = 3;
+let dy = -3;
 
 const paddleHeight = 10;
 const paddleWidth = 75;
 let paddleX = (canvas.width - paddleWidth) / 2;
 
-const brickRowCount = 3;
-const brickColumnCount = 5;
+const brickRowCount = 6;
+const brickColumnCount = 10;
 const brickWidth = 75;
 const brickHeight = 20;
 const brickPadding = 10;
@@ -68,7 +68,7 @@ function collisionDetection() {
 function drawBall() {
     ctx.beginPath();
     ctx.arc(x, y, ballRadius, 0, Math.PI * 2);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "#FF4433";
     ctx.fill();
     ctx.closePath();
 }
@@ -76,7 +76,7 @@ function drawBall() {
 function drawPaddle() {
     ctx.beginPath();
     ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight);
-    ctx.fillStyle = "#0095DD";
+    ctx.fillStyle = "#000000";
     ctx.fill();
     ctx.closePath();
 }
@@ -177,10 +177,15 @@ function collisionDetection() {
 function handleGameEnd() {
     if (checkGameOver()) {
         alert("おめでとうございます！すべてのブロックを崩しました！");
-        // ここでゲームを再起動するか、次のステージに進むための処理を実装する
-        // 例えば、以下のようにしてページをリロードしてゲームを再起動する
-        document.location.reload();
+        stopGameMusic(); // ゲーム音楽を停止
+        returnToTitleScreen(); // ゲームクリア後にタイトル画面に戻る処理を実行
     }
+}
+
+function returnToTitleScreen() {
+    setTimeout(function () {
+        window.location.href = "game01.html"; // タイトル画面にリダイレクト
+    }, 3000); // 3秒後にリダイレクト
 }
 
 // ブロックが残っているかどうかをチェックする関数
@@ -194,6 +199,7 @@ function checkGameOver() {
     }
     return true; // 崩れているブロックがない場合は true を返す
 }
+
 // ゲーム終了時に音楽を停止する関数
 function stopGameMusic() {
     const gameMusic = document.getElementById("gameMusic");
