@@ -184,7 +184,7 @@ function handleGameEnd() {
 
 function returnToTitleScreen() {
     setTimeout(function () {
-        window.location.href = "game01.html"; // タイトル画面にリダイレクト
+        window.location.href = "index.html"; // タイトル画面にリダイレクト
     }, 3000); // 3秒後にリダイレクト
 }
 
