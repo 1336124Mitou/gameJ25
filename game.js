@@ -116,8 +116,7 @@ function draw() {
             dy = -dy;
         }
         else {
-            gameOver(); // ゲームオーバー処理を呼び出す
-            return; // ゲームオーバーなので以降の処理はスキップ
+            document.location.reload();
         }
     }
 
@@ -131,33 +130,78 @@ function draw() {
     x += dx;
     y += dy;
 
-    if (y + dy > canvas.height) { // ボールがキャンバスの下端に到達した場合
-        gameOver(); // ゲームオーバー処理を呼び出す
-        return; // ゲームオーバーなので以降の処理はスキップ
+    if (y + dy > canvas.height - ballRadius + 10) { // ボールがキャンバスの下部まで落ちた場合
+        gameOver(); // ゲームオーバー処理を実行
+        return; // ゲームオーバーしたため、以降の描画処理をスキップ
     }
 
     requestAnimationFrame(draw);
 }
-
-// ゲーム開始前のカウントダウン
-function startCountdown() {
-    let count = 3; // カウントダウンの初期値
-    const countdownInterval = setInterval(function () {
-        if (count > 0) {
-            alert(count); // 現在のカウントを表示
-            count--; // カウントを減らす
-        } else {
-            clearInterval(countdownInterval); // インターバルを停止
-            draw(); // カウントダウンが終了したらゲームを開始
-        }
-    }, 1000); // インターバルは1秒ごとに
-}
-
-
 
 function gameOver() {
     alert("ゲームオーバー");
     document.location.reload();
 }
 
-startCountdown(); // ゲーム開始前にカウントダウンを開始
+draw();
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            const brick = bricks[c][r];
+            if (brick.status == 1) {
+                if (x > brick.x && x < brick.x + brickWidth && y > brick.y && y < brick.y + brickHeight) {
+                    dy = -dy;
+                    brick.status = 0;
+                    handleGameEnd(); // ブロックが崩れた後にゲーム終了をチェックする
+                }
+            }
+        }
+    }
+}
+function collisionDetection() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            const brick = bricks[c][r];
+            if (brick.status == 1) {
+                if (x > brick.x && x < brick.x + brickWidth && y > brick.y && y < brick.y + brickHeight) {
+                    dy = -dy;
+                    brick.status = 0;
+                    handleGameEnd(); // ブロックが崩れた後にゲーム終了をチェックする
+                }
+            }
+        }
+    }
+}
+
+// ブロックが全て崩れた後の処理を行う関数
+function handleGameEnd() {
+    if (checkGameOver()) {
+        alert("おめでとうございます！すべてのブロックを崩しました！");
+        stopGameMusic(); // ゲーム音楽を停止
+        returnToTitleScreen(); // ゲームクリア後にタイトル画面に戻る処理を実行
+    }
+}
+
+function returnToTitleScreen() {
+    setTimeout(function () {
+        window.location.href = "game01.html"; // タイトル画面にリダイレクト
+    }, 3000); // 3秒後にリダイレクト
+}
+
+// ブロックが残っているかどうかをチェックする関数
+function checkGameOver() {
+    for (let c = 0; c < brickColumnCount; c++) {
+        for (let r = 0; r < brickRowCount; r++) {
+            if (bricks[c][r].status == 1) {
+                return false; // 崩れていないブロックがある場合は false を返す
+            }
+        }
+    }
+    return true; // 崩れているブロックがない場合は true を返す
+}
+
+// ゲーム終了時に音楽を停止する関数
+function stopGameMusic() {
+    const gameMusic = document.getElementById("gameMusic");
+    gameMusic.pause();
+}
